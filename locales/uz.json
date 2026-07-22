@@ -1,0 +1,32 @@
+{
+  "onboarding": {
+    "select_language_title": "Tilni tanlang",
+    "select_language_subtitle": "Ilova qaysi tilda ishlashini tanlang. Buni keyin sozlamalardan o'zgartirishingiz mumkin.",
+    "continue_button": "Davom etish"
+  },
+  "auth": {
+    "register_title": "Ro'yxatdan o'tish",
+    "login_title": "Tizimga kirish",
+    "username_label": "Foydalanuvchi nomi",
+    "email_label": "Email",
+    "password_label": "Parol",
+    "submit_button": "Yuborish"
+  },
+  "habits": {
+    "empty_state": "Hali birorta odat qo'shmagansiz. Birinchi qadamni bugun tashlang.",
+    "add_habit": "Odat qo'shish",
+    "streak_label": "Zanjir",
+    "today_check": "Bugun bajarildi"
+  },
+  "notifications": {
+    "reminder_daily": "Bahona yo'q. Faqat harakat. Bugungi vazifangni bajar.",
+    "streak_lost": "Zanjir uzildi. Lekin kuchli odam qayta boshlaydi — boshqa hech kim emas, faqat sen.",
+    "streak_milestone": "{{count}} kunlik zanjir. Bu tasodif emas — bu intizom natijasi.",
+    "motivation_generic": "Kim bo'lishingni har kungi tanlovlaring belgilaydi. Bugun ham tanla."
+  },
+  "subscription": {
+    "free_limit_reached": "Free tarifda maksimal 3 ta odat mumkin. Cheklovsiz davom etish uchun Dark Elite (PRO) ga o'ting.",
+    "upgrade_to_pro": "Dark Elite (PRO) ga o'tish",
+    "pro_active": "Dark Elite obunasi faol"
+  }
+}

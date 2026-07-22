@@ -1,0 +1,179 @@
+// Prisma schema - Habit Tracker & Challenges platformasi
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------
+// USER MODELI
+// Har bir foydalanuvchi haqida asosiy ma'lumotlar
+// ---------------------------------------------------
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  email        String   @unique
+  password_hash String
+  created_at   DateTime @default(now())
+
+  // --- i18n / Onboarding ---
+  // Foydalanuvchi birinchi kirishda tanlagan til; barcha eslatma/matnlar shu tilda beriladi
+  preferred_language Language @default(uz)
+
+  // --- SaaS obuna holati (soddalashtirilgan: alohida Plan/Subscription jadvalisiz) ---
+  subscription_tier       SubscriptionTier @default(free)
+  subscription_expires_at DateTime? // faqat 'pro' uchun muhim; muddati o'tsa 'free'ga qaytariladi
+
+  // Relatsiyalar
+  habits                Habit[]
+  challengeParticipants ChallengeParticipant[]
+  payments              Payment[]
+
+  @@map("users")
+}
+
+// Interfeys/eslatmalar tili
+enum Language {
+  uz
+  ru
+  en
+}
+
+// Obuna darajasi (tarif)
+// free — Maksimal 3 ta odat, bazaviy eslatmalar, 1 oylik chellenj
+// pro  — "Dark Elite": cheksiz odatlar, 2 oylik premium chellenjlar, Streak Freeze, chuqur tahlil
+enum SubscriptionTier {
+  free
+  pro
+}
+
+// ---------------------------------------------------
+// HABIT MODELI
+// Foydalanuvchi yaratgan har bir odat
+// ---------------------------------------------------
+model Habit {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  title       String
+  description String?
+  frequency   Frequency @default(daily)
+  created_at  DateTime @default(now())
+
+  // Relatsiyalar
+  user User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  logs HabitLog[]
+
+  @@map("habits")
+}
+
+// Odat qanchalik tez-tez bajarilishi kerakligi
+enum Frequency {
+  daily
+  weekly
+}
+
+// ---------------------------------------------------
+// HABIT LOG MODELI
+// Odatning har kunlik/haftalik bajarilish tarixi
+// ---------------------------------------------------
+model HabitLog {
+  id       Int        @id @default(autoincrement())
+  habit_id Int
+  date     DateTime   @default(now())
+  status   LogStatus
+
+  // Relatsiyalar
+  habit Habit @relation(fields: [habit_id], references: [id], onDelete: Cascade)
+
+  // Bir kunda bir odat uchun faqat bitta log bo'lishi kerak
+  @@unique([habit_id, date])
+  @@map("habit_logs")
+}
+
+// Odat bajarilganmi yoki o'tkazib yuborilganmi
+enum LogStatus {
+  completed
+  skipped
+}
+
+// ---------------------------------------------------
+// CHALLENGE MODELI
+// Jamoaviy 30/60 kunlik chellenjlar
+// ---------------------------------------------------
+model Challenge {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String?
+  duration_days Int      // 30 yoki 60 kun
+  start_date    DateTime
+  end_date      DateTime
+
+  // Relatsiyalar
+  participants ChallengeParticipant[]
+
+  @@map("challenges")
+}
+
+// ---------------------------------------------------
+// CHALLENGE PARTICIPANT MODELI
+// Foydalanuvchi va chellenj o'rtasidagi bog'lovchi jadval
+// ---------------------------------------------------
+model ChallengeParticipant {
+  id            Int      @id @default(autoincrement())
+  challenge_id  Int
+  user_id       Int
+  streak_count  Int      @default(0)
+  joined_at     DateTime @default(now())
+
+  // Relatsiyalar
+  challenge Challenge @relation(fields: [challenge_id], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  // Bir foydalanuvchi bir chellenjga faqat bir marta qo'shilishi mumkin
+  @@unique([challenge_id, user_id])
+  @@map("challenge_participants")
+}
+
+// =====================================================
+// SAAS / OBUNA TIZIMI: TO'LOVLAR
+// Obuna holati (tier, muddati) to'g'ridan-to'g'ri User jadvalida saqlanadi;
+// Payment jadvali esa har bir to'lov urinishining tarixini yuritadi.
+// =====================================================
+
+// ---------------------------------------------------
+// PAYMENT MODELI
+// Click / Payme / Stripe orqali qilingan har bir to'lov tranzaksiyasi
+// ---------------------------------------------------
+model Payment {
+  id             Int             @id @default(autoincrement())
+  user_id        Int
+  provider       PaymentProvider
+  amount         Decimal         @db.Decimal(10, 2)
+  status         PaymentStatus   @default(pending)
+  transaction_id String?         @unique // provayder tomonidan berilgan tashqi ID (webhook shu orqali topadi)
+  created_at     DateTime        @default(now())
+  updated_at     DateTime        @updatedAt
+
+  // Relatsiyalar
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+// To'lov provayderi
+enum PaymentProvider {
+  click
+  payme
+  stripe
+}
+
+// To'lov holati
+enum PaymentStatus {
+  pending
+  completed
+  failed
+}

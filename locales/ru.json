@@ -1,0 +1,32 @@
+{
+  "onboarding": {
+    "select_language_title": "Выберите язык",
+    "select_language_subtitle": "Выберите язык интерфейса приложения. Вы сможете изменить его позже в настройках.",
+    "continue_button": "Продолжить"
+  },
+  "auth": {
+    "register_title": "Регистрация",
+    "login_title": "Вход",
+    "username_label": "Имя пользователя",
+    "email_label": "Email",
+    "password_label": "Пароль",
+    "submit_button": "Отправить"
+  },
+  "habits": {
+    "empty_state": "У вас пока нет привычек. Сделайте первый шаг уже сегодня.",
+    "add_habit": "Добавить привычку",
+    "streak_label": "Серия",
+    "today_check": "Выполнено сегодня"
+  },
+  "notifications": {
+    "reminder_daily": "Оправданий нет. Есть только действие. Сделай то, что должен сделать сегодня.",
+    "streak_lost": "Серия прервана. Но сильный человек начинает заново — и это никто, кроме тебя.",
+    "streak_milestone": "Серия из {{count}} дней. Это не случайность — это результат дисциплины.",
+    "motivation_generic": "То, кем ты становишься, решают твои ежедневные выборы. Выбери снова — сегодня."
+  },
+  "subscription": {
+    "free_limit_reached": "На бесплатном тарифе доступно не более 3 привычек. Перейдите на Dark Elite (PRO), чтобы снять ограничение.",
+    "upgrade_to_pro": "Перейти на Dark Elite (PRO)",
+    "pro_active": "Подписка Dark Elite активна"
+  }
+}

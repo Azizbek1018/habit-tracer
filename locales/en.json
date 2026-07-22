@@ -1,0 +1,32 @@
+{
+  "onboarding": {
+    "select_language_title": "Choose your language",
+    "select_language_subtitle": "Pick the language you want the app to use. You can change this later in settings.",
+    "continue_button": "Continue"
+  },
+  "auth": {
+    "register_title": "Create account",
+    "login_title": "Log in",
+    "username_label": "Username",
+    "email_label": "Email",
+    "password_label": "Password",
+    "submit_button": "Submit"
+  },
+  "habits": {
+    "empty_state": "You haven't added any habits yet. Take the first step today.",
+    "add_habit": "Add habit",
+    "streak_label": "Streak",
+    "today_check": "Completed today"
+  },
+  "notifications": {
+    "reminder_daily": "No excuses. Only action. Do what today requires.",
+    "streak_lost": "The streak is broken. A strong person starts again — no one does it for you.",
+    "streak_milestone": "{{count}}-day streak. This isn't luck — it's the result of discipline.",
+    "motivation_generic": "Who you become is decided by your daily choices. Choose again — today."
+  },
+  "subscription": {
+    "free_limit_reached": "The Free plan allows up to 3 habits. Upgrade to Dark Elite (PRO) to remove the limit.",
+    "upgrade_to_pro": "Upgrade to Dark Elite (PRO)",
+    "pro_active": "Dark Elite subscription active"
+  }
+}
